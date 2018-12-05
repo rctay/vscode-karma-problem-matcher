@@ -10,10 +10,23 @@
         "Programming Languages"
     ],
     "contributes": {
-        "keybindings": [
+        "problemMatchers": [
             {
-                "key": "ctrl+.",
-                "command": "workbench.action.showCommands"
+                "name": "karma",
+                "owner": "typescript",
+                "severity": "error",
+                "pattern": [
+                    {
+                        "regexp": "\\s+(Expected .*)",
+                        "message": 1
+                    },
+                    {
+                        "regexp": "[^\\(]*\\(http://[^:]+:\\d+/(.*)\\?:(\\d+):(\\d+)\\)",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3
+                    }
+                ]
             }
         ]
     }
