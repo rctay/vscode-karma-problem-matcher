@@ -7,7 +7,7 @@
         "vscode": "^1.29.0"
     },
     "categories": [
-        "Keymaps"
+        "Programming Languages"
     ],
     "contributes": {
         "keybindings": [
