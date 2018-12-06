@@ -1,13 +1,27 @@
-# README
-## This is the README for your extension "blabla2"
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+# VS Code Karma Problem Matcher
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-### For more information
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## Usage
+
+After installing this extension, in your `tasks.json`, specify `"$karma"` for the `"problemMatcher"` field. For example:
+
+```json
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Live Unit Tests",
+            "type": "npm",
+            "script": "test",
+            "group": "test",
+            "isBackground": true,
+            "problemMatcher": "$karma"
+        }
+    ]
+}
+```
 
 **Enjoy!**
