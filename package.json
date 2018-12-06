@@ -1,8 +1,9 @@
 {
-    "name": "blabla2",
-    "displayName": "blabla2",
-    "description": "",
-    "version": "0.0.1",
+    "name": "karma-problem-matcher",
+    "displayName": "Karma Problem Matcher",
+    "description": "Capture errors from Karma tests running in Visual Studio Code",
+    "version": "1.0.0",
+    "license": "MIT",
     "engines": {
         "vscode": "^1.29.0"
     },
