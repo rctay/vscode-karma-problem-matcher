@@ -26,7 +26,16 @@
                         "line": 2,
                         "column": 3
                     }
-                ]
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "^\\s+\\d+%\\s+(compiling|building)"
+                    },
+                    "endsPattern": {
+                        "regexp": "^TOTAL: \\d+"
+                    }
+                }
             }
         ]
     }
