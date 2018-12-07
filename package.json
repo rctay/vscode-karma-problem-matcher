@@ -13,7 +13,7 @@
     "contributes": {
         "problemMatchers": [
             {
-                "name": "karma",
+                "name": "karma-jasmine2",
                 "owner": "typescript",
                 "severity": "error",
                 "pattern": [
@@ -31,7 +31,36 @@
                 "background": {
                     "activeOnStart": true,
                     "beginsPattern": {
-                        "regexp": "^\\s+\\d+%\\s+(compiling|building)"
+                        "regexp": "(^\\s+\\d+%\\s+(compiling|building))|(Executed \\d+)"
+                    },
+                    "endsPattern": {
+                        "regexp": "^TOTAL: \\d+"
+                    }
+                }
+            },
+            {
+                "name": "karma-jasmine3",
+                "owner": "typescript",
+                "severity": "error",
+                "pattern": [
+                    {
+                        "regexp": "\\s+(Expected .*)",
+                        "message": 1
+                    },
+                    {
+                        "regexp": "^\\s+at <Jasmine>$"
+                    },
+                    {
+                        "regexp": "[^\\(]*\\(http://[^:]+:\\d+/(.*)\\?:(\\d+):(\\d+)\\)",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "(^\\s+\\d+%\\s+(compiling|building))|(Executed \\d+)"
                     },
                     "endsPattern": {
                         "regexp": "^TOTAL: \\d+"

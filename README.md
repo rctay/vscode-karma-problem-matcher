@@ -4,7 +4,8 @@
 
 ## Usage
 
-After installing this extension, in your `tasks.json`, specify `"$karma"` for the `"problemMatcher"` field. For example:
+After installing this extension, in the `"problemMatcher"` field in `tasks.json`, specify `"$karma-jasmine2"` if you
+are using Jasmine 2, or `"$karma-jasmine3"` if you are using Jasmine 3. For example:
 
 ```json
 {
@@ -18,7 +19,7 @@ After installing this extension, in your `tasks.json`, specify `"$karma"` for th
             "script": "test",
             "group": "test",
             "isBackground": true,
-            "problemMatcher": "$karma"
+            "problemMatcher": "$karma-jasmine2"
         }
     ]
 }
