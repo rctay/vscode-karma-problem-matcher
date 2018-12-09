@@ -93,9 +93,9 @@ TOTAL: 3 SUCCESS
 TOTAL: 3 SUCCESS
 `;
 
-export default {
-    jasmine2OutputWithAFailure,
-    jasmine2OutputWithNoFailure,
-    jasmine3OutputWithAFailure,
-    jasmine3OutputWithNoFailure,
+export const fixtures = {
+  jasmine2OutputWithAFailure,
+  jasmine2OutputWithNoFailure,
+  jasmine3OutputWithAFailure,
+  jasmine3OutputWithNoFailure,
 };
