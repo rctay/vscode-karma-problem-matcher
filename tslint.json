@@ -3,10 +3,9 @@
     "tslint-microsoft-contrib",
     "tslint-no-unused-expression-chai"
   ],
-//   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
   "linterOptions": {
     "exclude": [
-      "*.json"
+      "package.json"
     ]
   },
   "rules": {
