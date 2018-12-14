@@ -1,17 +1,26 @@
-import chai = require('chai');
+import * as chaiM from 'chai';
 
-interface StrictSequenceState {
+interface IStrictSequenceState {
   entryIndex: number;
   patternIndex: number;
   patterns: RegExp[];
 }
 
-interface RelaxedSequenceState {
+interface IRelaxedSequenceState {
   entryIndex?: number;
 }
 
-chai.use((_chai: any, utils: any) => {
-  const Assertion = _chai.Assertion;
+function findMatch(lines: string[], pattern: RegExp, fromIndex: number = 0) {
+  const i = lines.slice(fromIndex).findIndex((line) => line.match(pattern) !== null);
+  if (i === -1) {
+    return { i: lines.length, match: undefined };
+  } else {
+    return { i: i + fromIndex, match: lines[i + fromIndex].match(pattern) };
+  }
+}
+
+chaiM.use((chai: any) => {
+  const Assertion = chai.Assertion;
 
   Assertion.addProperty('haveAnEntry', function(this: any) {
     const subject: string[] = this._obj;
@@ -19,17 +28,10 @@ chai.use((_chai: any, utils: any) => {
     // tslint:disable-next-line:no-unused-expression-chai
     new Assertion(subject).to.be.an('array').that.is.not.empty;
   });
+});
 
-  function findMatch(lines: string[], pattern: RegExp, from = 0) {
-    let i, match;
-    for (i = from; i < lines.length; i++) {
-      match = lines[i].match(pattern);
-      if (match !== null) {
-        break;
-      }
-    }
-    return {i, match};
-  }
+chaiM.use((chai: any, utils: any) => {
+  const Assertion = chai.Assertion;
 
   Assertion.addMethod(
       'matchFirstRegexpOf',
@@ -50,7 +52,7 @@ chai.use((_chai: any, utils: any) => {
             'expected 1st pattern #{exp} to not match a line in #{this}',
             firstPattern);
 
-        const state: StrictSequenceState = {
+        const state: IStrictSequenceState = {
           entryIndex: i,
           patternIndex: 0,
           patterns,
@@ -60,7 +62,7 @@ chai.use((_chai: any, utils: any) => {
 
   Assertion.addProperty('nextEntryAndPatternMatch', function(this: any) {
     const subject: string[] = this._obj;
-    const {entryIndex, patternIndex, patterns}: StrictSequenceState =
+    const {entryIndex, patternIndex, patterns}: IStrictSequenceState =
         utils.flag(this, '__strictSequenceState');
 
     const entryIndexCandidate = entryIndex + 1;
@@ -71,15 +73,11 @@ chai.use((_chai: any, utils: any) => {
     this.assert(
         entryIndexCandidate < subject.length &&
             subject[entryIndexCandidate].match(pattern) !== null,
-        `expected next (${
-            patternIndexCandidate}-th) pattern #{exp} to match next (${
-            entryIndexCandidate}-th) line in #{this}`,
-        `expected next (${
-            patternIndexCandidate}-th) pattern #{exp} to not match next (${
-            entryIndexCandidate}-th) line in #{this}`,
+        `expected next (${patternIndexCandidate}-th) pattern #{exp} to match next (${entryIndexCandidate}-th) line in #{this}`,
+        `expected next (${patternIndexCandidate}-th) pattern #{exp} to not match next (${entryIndexCandidate}-th) line in #{this}`,
         pattern);
 
-    const updatedState: StrictSequenceState = {
+    const updatedState: IStrictSequenceState = {
       entryIndex: entryIndexCandidate,
       patternIndex: patternIndex + 1,
       patterns,
@@ -88,7 +86,7 @@ chai.use((_chai: any, utils: any) => {
   });
 
   Assertion.addProperty('patternsExhausted', function(this: any) {
-    const {patternIndex, patterns}: StrictSequenceState =
+    const {patternIndex, patterns}: IStrictSequenceState =
         utils.flag(this, '__strictSequenceState');
     this.assert(
         patternIndex === patterns.length - 1,
@@ -96,6 +94,10 @@ chai.use((_chai: any, utils: any) => {
         'expected further patterns, but found #{act}', [],
         patterns.slice(patternIndex + 1));
   });
+});
+
+chaiM.use((chai: any, utils: any) => {
+  const Assertion = chai.Assertion;
 
   Assertion.addProperty('anyNextEntry', function(this: any) {
     const {entryIndex} = utils.flag(this, '__relaxedSequenceState');
@@ -109,8 +111,7 @@ chai.use((_chai: any, utils: any) => {
         const pattern = new RegExp(problemPattern.regexp);
         const subject: string[] = this._obj;
 
-        const {entryIndex = undefined}: RelaxedSequenceState =
-            utils.flag(this, '__relaxedSequenceState') || {};
+        const {entryIndex}: IRelaxedSequenceState = utils.flag(this, '__relaxedSequenceState') || {};
 
         const qualifier = (entryIndex === undefined) ? '' : 'subsequent ';
         const {i, match} = findMatch(
@@ -118,13 +119,11 @@ chai.use((_chai: any, utils: any) => {
 
         this.assert(
             i < subject.length && match !== null,
-            'expected pattern #{exp} to match a ' + qualifier +
-                'line in #{this}',
-            'expected pattern #{exp} to not match a ' + qualifier +
-                'line in #{this}',
+            `expected pattern #{exp} to match a ${qualifier}line in #{this}`,
+            `expected pattern #{exp} to not match a ${qualifier}line in #{this}`,
             pattern);
 
-        const updatedState: RelaxedSequenceState = {entryIndex: i};
+        const updatedState: IRelaxedSequenceState = {entryIndex: i};
         utils.flag(this, '__relaxedSequenceState', updatedState);
       });
 });

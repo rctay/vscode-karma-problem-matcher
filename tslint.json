@@ -1,15 +1,24 @@
 {
   "extends": [
-    "gts/tslint.json",
+    "tslint-microsoft-contrib",
     "tslint-no-unused-expression-chai"
   ],
+//   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
   "linterOptions": {
     "exclude": [
-      "*.json",
-      "**/*.json"
+      "*.json"
     ]
   },
   "rules": {
-    "no-any": false
+    "max-line-length": false,
+    "newline-per-chained-call": false,
+    "typedef": [true, "parameter", "property-declaration", "member-variable-declaration"],
+    "trailing-comma": [true, { "singleline": "never", "multiline": "always" }],
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type", "check-module"],
+    "no-any": false,
+    "no-unsafe-any": false,
+    "no-relative-imports": false,
+    "no-implicit-dependencies": [true, "dev"],
+    "strict-boolean-expressions": false
   }
 }

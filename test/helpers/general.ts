@@ -1,12 +1,24 @@
-import {contributes} from '../../package.json';
+import { contributes } from '../../package.json';
+
+type ProblemMatcherP = {
+    name: string;
+    pattern: {regexp: string}[];
+    background: {
+        beginsPattern: {regexp: string};
+        endsPattern: {regexp: string};
+    };
+};
 
 export function findProblemMatcher(problemMatcherName: string) {
-  const matcherDef = contributes.problemMatchers.find(
-      matcherDef => matcherDef.name === problemMatcherName);
+  const problemMatchers: ProblemMatcherP[] = contributes.problemMatchers;
+  const matcherDef = problemMatchers.find(
+      def => def.name === problemMatcherName);
+
   if (matcherDef === undefined) {
     throw new Error();
   }
+
   return matcherDef;
 }
 
-export const blobToLines = (blob: string) => blob.trim().split('\n');
+export const blobToLines = (blob: string): string[] => blob.trim().split('\n');
