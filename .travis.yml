@@ -10,4 +10,4 @@ jobs:
     - stage: Test
       script:
         - npm run test:js
-        - npm test
+        - npm run test:only
