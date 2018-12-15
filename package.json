@@ -73,6 +73,7 @@
     "compile": "tsc -p .",
     "watch": "tsc -watch -p ./",
     "test": "TS_NODE_FILES=true npx mocha --require ts-node/register --require test/helpers/patternSeq test/**/*.test.ts",
+    "test:js": "cd build && npx mocha --require test/helpers/patternSeq test/**/*.test.js",
     "check": "tslint --project ./tsconfig.json",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
