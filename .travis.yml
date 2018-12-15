@@ -14,6 +14,8 @@ jobs:
         - npm run test:js
         - npm run test:only
     - stage: Publish
-      on:
-        tags: true
-      script: npx vsce publish -p $AZURE_TOKEN
+      deploy:
+        provider: script
+        on:
+          tags: true
+        script: npx vsce publish -p $AZURE_TOKEN
