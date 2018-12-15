@@ -2,3 +2,12 @@ language: node_js
 node_js:
   - "8"
 cache: yarn
+before_script: npm run compile
+jobs:
+  include:
+    - stage: Compile
+      script: npm run compile
+    - stage: Test
+      script:
+        - (cd build && npx mocha --require test/helpers/patternSeq "test/**/*.test.js")
+        - npm test
