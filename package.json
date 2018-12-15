@@ -4,6 +4,11 @@
   "description": "Capture errors from Karma tests running in Visual Studio Code",
   "version": "1.0.0",
   "license": "MIT",
+  "publisher": "rctay",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rctay/vscode-karma-problem-matcher"
+  },
   "engines": {
     "vscode": "^1.29.0"
   },
