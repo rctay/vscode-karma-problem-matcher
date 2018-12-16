@@ -9,6 +9,7 @@
     "type": "git",
     "url": "https://github.com/rctay/vscode-karma-problem-matcher"
   },
+  "icon": "images/karma-logo.png",
   "engines": {
     "vscode": "^1.29.0"
   },
