@@ -2,7 +2,7 @@
   "name": "karma-problem-matcher",
   "displayName": "Karma Problem Matcher",
   "description": "Capture errors from Karma tests running in Visual Studio Code",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "publisher": "rctay",
   "repository": {
