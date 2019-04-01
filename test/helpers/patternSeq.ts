@@ -19,6 +19,15 @@ function findMatch(lines: string[], pattern: RegExp, fromIndex: number = 0) {
   }
 }
 
+function nth(n: number): string {
+  switch (n) {
+    case 1: return '1st';
+    case 2: return '2nd';
+    case 3: return '3rd';
+    default: return `${n}th`;
+  }
+}
+
 chaiM.use((chai: any) => {
   const Assertion = chai.Assertion;
 
@@ -35,7 +44,7 @@ chaiM.use((chai: any, utils: any) => {
 
   Assertion.addMethod(
       'matchFirstRegexpOf',
-      function(this: any, problemPattern: ProblemPatternP[]) {
+      function(this: any, problemPattern: ProblemPatternP[], expectedValues?: string[]) {
         new Assertion(problemPattern).to.be.an('array');
 
         const patterns: RegExp[] =
@@ -52,6 +61,13 @@ chaiM.use((chai: any, utils: any) => {
             'expected 1st pattern #{exp} to not match a line in #{this}',
             firstPattern);
 
+        if (expectedValues && match) {
+          this.assert(
+            (match.length - 1 === expectedValues.length) && expectedValues.every((expected, group) => expected === match[group + 1]),
+            `expected 1st pattern #{exp} to match values ${JSON.stringify(expectedValues)} but it instead had values ${JSON.stringify(match.slice(1))}`,
+            firstPattern);
+        }
+
         const state: IStrictSequenceState = {
           entryIndex: i,
           patternIndex: 0,
@@ -60,7 +76,7 @@ chaiM.use((chai: any, utils: any) => {
         utils.flag(this, '__strictSequenceState', state);
       });
 
-  Assertion.addProperty('nextEntryAndPatternMatch', function(this: any) {
+  Assertion.addMethod('matchNextRegexpOfPattern', function(this: any, expectedValues?: string[]) {
     const subject: string[] = this._obj;
     const {entryIndex, patternIndex, patterns}: IStrictSequenceState =
         utils.flag(this, '__strictSequenceState');
@@ -70,12 +86,20 @@ chaiM.use((chai: any, utils: any) => {
 
     const pattern = patterns[patternIndexCandidate];
 
+    const match = entryIndexCandidate < subject.length && subject[entryIndexCandidate].match(pattern);
     this.assert(
-        entryIndexCandidate < subject.length &&
-            subject[entryIndexCandidate].match(pattern) !== null,
-        `expected next (${patternIndexCandidate}-th) pattern #{exp} to match next (${entryIndexCandidate}-th) line in #{this}`,
-        `expected next (${patternIndexCandidate}-th) pattern #{exp} to not match next (${entryIndexCandidate}-th) line in #{this}`,
+        match !== null,
+        `expected ${nth(patternIndexCandidate + 1)} pattern #{exp} to match next (${nth(entryIndexCandidate + 1)}) line, ${JSON.stringify(subject[entryIndexCandidate])}`,
+        `expected ${nth(patternIndexCandidate + 1)} pattern #{exp} to not match next (${nth(entryIndexCandidate + 1)}) line, ${JSON.stringify(subject[entryIndexCandidate])}`,
         pattern);
+
+    if (expectedValues && match) {
+      this.assert(
+        !!match && (match.length - 1 === expectedValues.length) && expectedValues.every((expected, group) => expected === match[group + 1]),
+        `expected ${nth(patternIndexCandidate + 1)} pattern #{exp} to match values ${JSON.stringify(expectedValues)} but it instead had values ${JSON.stringify(match.slice(1))}`,
+        `expected ${nth(patternIndexCandidate + 1)} pattern #{exp} to not match values ${JSON.stringify(expectedValues)}`,
+        pattern);
+    }
 
     const updatedState: IStrictSequenceState = {
       entryIndex: entryIndexCandidate,
