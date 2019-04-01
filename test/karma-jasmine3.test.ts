@@ -87,4 +87,45 @@ describe('karma-jasmine3 problemMatcher', () => {
       });
     }
   });
+
+  describe('given karma-jasmine3 output with a failure, processed with karma-sourcemap-loader, without a base url', () => {
+    // Yes, the strange 3-space indentation of ie/edge launchers is accurate
+    const launchers : {[launcher: string]: string} = {
+      'karma-ie-launcher 1.0.0': `IE 11.0.0 (Windows 10.0.0) hello_world should equal "Hello, world!" FAILED
+        Error: Expected 'hello, world!' to equal 'Hello, world!'.
+            at <Jasmine>
+           at Anonymous function (tests/test_hello_world.ts:3:47 <- tests/tests.js:17:56)
+            at <Jasmine>`,
+
+      'karma-edge-launcher 0.4.2': `Edge 18.17763.0 (Windows 10.0.0) hello_world should equal "Hello, world!" FAILED
+        Error: Expected 'hello, world!' to equal 'Hello, world!'.
+            at <Jasmine>
+           at Anonymous function (tests/test_hello_world.ts:3:47 <- tests/tests.js:17:56)
+            at <Jasmine>`,
+
+      'karma-chrome-launcher 2.2.0': `Chrome 73.0.3683 (Windows 10.0.0) hello_world should equal "Hello, world!" FAILED
+        Error: Expected 'hello, world!' to equal 'Hello, world!'.
+            at <Jasmine>
+            at UserContext.<anonymous> (tests/test_hello_world.ts:3:47 <- tests/tests.js:17:97)
+            at <Jasmine>`,
+
+      'karma-firefox-launcher 1.1.0': `Firefox 65.0.0 (Windows 10.0.0) hello_world should equal "Hello, world!" FAILED
+        Expected 'hello, world!' to equal 'Hello, world!'.
+        <Jasmine>
+        @tests/test_hello_world.ts:3:47 <- tests/tests.js:17:97
+        <Jasmine>`,
+    };
+
+    // tslint:disable-next-line:mocha-no-side-effect-code
+    for (const launcher of Object.keys(launchers)) {
+      it(`${launcher} output should match a problemMatcher.pattern`, () => {
+        const lines = launchers[launcher].split('\n');
+        expect(lines)
+            .to.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern, [`Expected 'hello, world!' to equal 'Hello, world!'.`])
+            .and.matchNextRegexpOfPattern([])
+            .and.matchNextRegexpOfPattern(['tests/test_hello_world.ts', '3', '47'])
+            .and.patternsExhausted;
+      });
+    }
+  });
 });
