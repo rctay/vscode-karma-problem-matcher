@@ -20,7 +20,7 @@
     "problemMatchers": [
       {
         "name": "karma-jasmine2",
-        "owner": "typescript",
+        "owner": "karma-jasmine",
         "severity": "error",
         "pattern": [
           {
@@ -46,7 +46,7 @@
       },
       {
         "name": "karma-jasmine3",
-        "owner": "typescript",
+        "owner": "karma-jasmine",
         "severity": "error",
         "pattern": [
           {
