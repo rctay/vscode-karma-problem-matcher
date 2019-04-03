@@ -47,6 +47,64 @@ describe('karma-jasmine3 problemMatcher', () => {
     });
   });
 
+  describe('given karma-jasmine3 watch output', () => {
+    describe('with only failures', () => {
+      const lines = () => blobToLines(fixtures.jasmine3OutputWithAFailure);
+
+      it('has a sequence matching beginsPattern and endsPattern', () => {
+        const backgroundPattern = matcherDef().background;
+
+        expect(lines())
+            .to.haveAnEntry.matchRegexp(backgroundPattern.beginsPattern)
+            .and.anyNextEntry.matchRegexp(backgroundPattern.endsPattern);
+      });
+
+      it('has a sequence matching problemMatcher.pattern sequence', () => {
+        expect(lines())
+            .to.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern, [`Expected 'my-app' to equal 'my-app aoeu'.`])
+            .and.matchNextRegexpOfPattern([])
+            .and.matchNextRegexpOfPattern(['src/app/app.component.spec.ts', '33', '54'])
+            .and.patternsExhausted;
+      });
+    });
+
+    describe('with some failures', () => {
+      const lines = () => blobToLines(fixtures.jasmine3OutputWithAFailure);
+
+      it('has a sequence matching beginsPattern and endsPattern', () => {
+        const backgroundPattern = matcherDef().background;
+
+        expect(lines())
+            .to.haveAnEntry.matchRegexp(backgroundPattern.beginsPattern)
+            .and.anyNextEntry.matchRegexp(backgroundPattern.endsPattern);
+      });
+
+      it('has a sequence matching problemMatcher.pattern sequence', () => {
+        expect(lines())
+            .to.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern, [`Expected 'my-app' to equal 'my-app aoeu'.`])
+            .and.matchNextRegexpOfPattern([])
+            .and.matchNextRegexpOfPattern(['src/app/app.component.spec.ts', '33', '54'])
+            .and.patternsExhausted;
+      });
+    });
+
+    describe('with only successes', () => {
+      const lines = () => blobToLines(fixtures.jasmine3OutputWithNoFailure);
+
+      it('has a sequence matching beginsPattern and endsPattern', () => {
+        const backgroundPattern = matcherDef().background;
+
+        expect(lines())
+            .to.haveAnEntry.matchRegexp(backgroundPattern.beginsPattern)
+            .and.anyNextEntry.matchRegexp(backgroundPattern.endsPattern);
+      });
+
+      it('does not have a sequence matching problemMatcher.pattern', () => {
+        expect(lines()).to.not.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern);
+      });
+    });
+  });
+
   describe('given karma-jasmine3 output with a failure, without a base url', () => {
     // Yes, the strange 3-space indentation of ie/edge launchers is accurate
     const launchers : {[launcher: string]: string} = {

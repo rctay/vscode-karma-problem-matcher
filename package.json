@@ -66,10 +66,10 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": {
-            "regexp": "(^\\s+\\d+%\\s+(compiling|building))|(Executed \\d+)"
+            "regexp": "(^\\s+\\d+%\\s+(compiling|building))|(INFO \\[filelist\\]: Changed file )"
           },
           "endsPattern": {
-            "regexp": "^TOTAL: \\d+"
+            "regexp": "(^TOTAL: \\d+)|(Executed \\d+)"
           }
         }
       }
