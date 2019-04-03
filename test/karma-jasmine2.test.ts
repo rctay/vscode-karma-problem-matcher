@@ -24,8 +24,9 @@ describe('karma-jasmine2 problemMatcher', () => {
 
     it('has a sequence matching problemMatcher.pattern sequence', () => {
       expect(lines())
-          .to.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern)
-          .and.nextEntryAndPatternMatch.and.patternsExhausted;
+          .to.haveAnEntry.matchFirstRegexpOf(matcherDef().pattern, [`Expected 'my-app' to equal 'my-app aoeu'.`])
+          .and.matchNextRegexpOfPattern(['src/app/app.component.spec.ts', '22', '23'])
+          .and.patternsExhausted;
     });
   });
 

@@ -93,9 +93,40 @@ TOTAL: 3 SUCCESS
 TOTAL: 3 SUCCESS
 `;
 
+// "TOTAL: ..." line is omitted from --auto-watch karma builds if all results were errors
+const jasmine3OutputWatchOnlyFailures = `
+02 04 2019 18:31:57.864:INFO [filelist]: Changed file "i:/home/projects/template_ts_library_vscode/tests/tests.js".
+Chrome 73.0.3683 (Windows 10.0.0) hello_world should equal "hello, world!" FAILED
+        Error: Expected 'hello, world!' to equal 'hello,world!'.
+            at <Jasmine>
+            at UserContext.<anonymous> (tests/test_hello_world.ts:3:42 <- tests/tests.js:16:43)
+            at <Jasmine>
+Chrome 73.0.3683 (Windows 10.0.0): Executed 1 of 1 (1 FAILED) ERROR (0.005 secs / 0.002 secs)
+`;
+
+const jasmine3OutputWatchOnlySuccesses = `
+02 04 2019 18:32:34.610:INFO [filelist]: Changed file "i:/home/projects/template_ts_library_vscode/tests/tests.js".
+Chrome 73.0.3683 (Windows 10.0.0): Executed 1 of 1 SUCCESS (0.006 secs / 0 secs)
+TOTAL: 1 SUCCESS
+`;
+
+const jasmine3OutputWatchMixedSuccess = `
+02 04 2019 18:34:19.515:INFO [filelist]: Changed file "i:/home/projects/template_ts_library_vscode/tests/tests.js".
+Chrome 73.0.3683 (Windows 10.0.0) hello_world should equal "hello, world!" FAILED
+        Error: Expected 'hello, world!' to equal 'hello,world!'.
+            at <Jasmine>
+            at UserContext.<anonymous> (tests/test_hello_world.ts:7:42 <- tests/tests.js:19:43)
+            at <Jasmine>
+Chrome 73.0.3683 (Windows 10.0.0): Executed 2 of 2 (1 FAILED) (0.006 secs / 0.002 secs)
+TOTAL: 1 FAILED, 1 SUCCESS
+`;
+
 export const fixtures = {
   jasmine2OutputWithAFailure,
   jasmine2OutputWithNoFailure,
   jasmine3OutputWithAFailure,
   jasmine3OutputWithNoFailure,
+  jasmine3OutputWatchOnlyFailures,
+  jasmine3OutputWatchOnlySuccesses,
+  jasmine3OutputWatchMixedSuccess,
 };
